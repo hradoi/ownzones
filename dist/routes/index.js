@@ -8,23 +8,35 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = __importStar(require("express"));
-// fs.readFile process.cwd()
+const stats = {};
 exports.register = (app) => {
     app.use("/images", express.static(__dirname + "/images"));
+    const cwd = process.cwd();
     app.get("/image/:imageName", (req, res) => {
         if (req.query.size) {
-            res.send(`${req.params.imageName} + ${req.query.size}`);
+            const queryStr = req.query.size;
+            const splitPlace = queryStr.toLowerCase().indexOf("x");
+            let height;
+            let width;
+            if (splitPlace < 0) { // assume square
+                height = Number.parseInt(queryStr, 10);
+                width = Number.parseInt(queryStr, 10);
+            }
+            else {
+                height = Number.parseInt(queryStr.substr(0, splitPlace), 10);
+                width = Number.parseInt(queryStr.substr(splitPlace + 1, queryStr.length - splitPlace), 10);
+            }
+            res.send(height + " " + width);
+            // res.sendFile(`${x}/images/${req.params.imageName}`);
+            // res.send( `${req.params.imageName} + ${req.query.size}` );
         }
         else {
-            res.send("normal image");
+            res.sendFile(`${cwd}/images/${req.params.imageName}`);
         }
     });
     app.get("/", (req, res) => {
-        const items = [
-            { name: "Ala" },
-            { name: "Bala" }
-        ];
-        res.render("index", { items });
+        // parsed images
+        res.send(`Stats for nerds!`);
     });
 };
 /*
