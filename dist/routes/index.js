@@ -1,62 +1,69 @@
-import * as express from "express";
-import * as fs from "fs";
-
-import sharp from "sharp";
-import { Statistics } from "./Statistics";
-
-const stats: Statistics = Statistics.getInstance();
+"use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express = __importStar(require("express"));
+const fs = __importStar(require("fs"));
+const sharp_1 = __importDefault(require("sharp"));
+const Statistics_1 = require("./Statistics");
+const stats = Statistics_1.Statistics.getInstance();
 stats.initialize();
-
-export const register = ( app: express.Application ) => {
+exports.register = (app) => {
     app.use("/images", express.static(__dirname + "/images"));
     const cwd = process.cwd();
-
-    app.get( "/image/:imageName", function foo( req , res ) {
+    app.get("/image/:imageName", function foo(req, res) {
         const inputFile = `${cwd}/images/${req.params.imageName}`;
-
         if (!fs.existsSync(inputFile)) {
             res.send(`Input image ${req.params.imageName} doesn't exist!`);
-        } else {
+        }
+        else {
             if (req.query.size) {
-                const queryStr: string = req.query.size;
-                const splitPlace: number = queryStr.toLowerCase().indexOf("x");
-                let height: number;
-                let width: number;
-                if ( splitPlace < 0) { // assume square
+                const queryStr = req.query.size;
+                const splitPlace = queryStr.toLowerCase().indexOf("x");
+                let height;
+                let width;
+                if (splitPlace < 0) { // assume square
                     height = Number.parseInt(queryStr, 10);
                     width = Number.parseInt(queryStr, 10);
-                } else {
+                }
+                else {
                     height = Number.parseInt(queryStr.substr(0, splitPlace), 10);
                     width = Number.parseInt(queryStr.substr(splitPlace + 1, queryStr.length - splitPlace), 10);
                 }
-
                 const fileNameSansExtension = (`${req.params.imageName}`.split("."))[0];
                 const outputFile = `${cwd}/cachedImages/${fileNameSansExtension}_${height}_${width}.jpg`;
-
                 if (fs.existsSync(outputFile)) {
                     res.sendFile(outputFile);
-                } else {
-                    sharp(inputFile)
+                }
+                else {
+                    sharp_1.default(inputFile)
                         .resize({
-                            fit: sharp.fit.fill,
-                            height,
-                            width,
-                        })
+                        fit: sharp_1.default.fit.fill,
+                        height,
+                        width,
+                    })
                         .toFile(outputFile)
                         .then(() => res.sendFile(outputFile))
                         .catch(() => {
-                                res.send(`Error occured resizing ${req.params.imageName}
+                        res.send(`Error occured resizing ${req.params.imageName}
                                             to specified parameters (${height},${width}))`);
-                                }
-                            );
-                        }
-            } else {
+                    });
+                }
+            }
+            else {
                 res.sendFile(`${cwd}/images/${req.params.imageName}`);
             }
         }
-    } );
-
-    app.get("/", (req: any, res) => {
+    });
+    app.get("/", (req, res) => {
         // var dict = new Collections.Dictionary<>();
         // fs.readdir(`${cwd}/images`, (err, files) => {
         //     // const retVal: Logger[] = new Array<Logger>();
@@ -72,3 +79,4 @@ export const register = ( app: express.Application ) => {
         res.send(stats.prettify());
     });
 };
+//# sourceMappingURL=index.js.map

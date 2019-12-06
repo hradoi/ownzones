@@ -1,0 +1,1 @@
+{"version":3,"file":"FileInformation.js","sourceRoot":"","sources":["../../src/routes/FileInformation.ts"],"names":[],"mappings":";;AAAA,MAAa,eAAe;IAGxB,YAAY,IAAY;QACpB,IAAI,CAAC,IAAI,GAAG,IAAI,CAAC;QACjB,IAAI,CAAC,OAAO,GAAG,CAAC,CAAC;IACrB,CAAC;IACM,eAAe;QAClB,IAAI,CAAC,OAAO,IAAI,CAAC,CAAC;IACtB,CAAC;IAEM,UAAU;QACb,OAAO,IAAI,CAAC,OAAO,CAAC;IACxB,CAAC;CACJ;AAdD,0CAcC"}
