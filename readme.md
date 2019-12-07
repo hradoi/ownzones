@@ -12,7 +12,7 @@ image at 300x400 and return it to the client.
 
 Additional info, specs & requirements:
 • Provide documentation and samples for calling the service and running the tests and the code.
-• Include automated tests to cover the functionality.
+• Include automated tests to cover the functionality. *couldn't :( *
 
 
 • The project must be developed in TypeScript. *check*

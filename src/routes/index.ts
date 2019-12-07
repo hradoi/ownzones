@@ -1,5 +1,5 @@
 import * as express from "express";
-import * as rimraf from "rimraf";
+// import * as rimraf from "rimraf";
 
 import { ImageUtils } from "../logic/ImageUtils";
 import { Statistics } from "../logic/Statistics";
